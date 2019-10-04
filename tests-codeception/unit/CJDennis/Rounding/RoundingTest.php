@@ -2,7 +2,6 @@
 namespace CJDennis\Rounding;
 
 use Codeception\Test\Unit;
-use ReflectionClass;
 use UnitTester;
 
 class RoundingTest extends Unit {

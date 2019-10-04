@@ -12,4 +12,8 @@ trait RoundingTestCommon {
   public function testShouldRoundTheFractionalPartOfANumberBelowAHalfDownToTheNextInteger() {
     $this->assertSame(1.0, Rounding::round(1.2));
   }
+
+  public function testShouldRoundTheFractionalPartOfANumberExactlyAHalfUpToTheNextInteger() {
+    $this->assertSame(2.0, Rounding::round(1.5));
+  }
 }

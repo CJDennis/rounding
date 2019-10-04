@@ -2,7 +2,7 @@
 namespace CJDennis\Rounding;
 
 class Rounding {
-  public static function round($param) {
-    return 1.0;
+  public static function round($number) {
+    return round($number);
   }
 }

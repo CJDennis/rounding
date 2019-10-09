@@ -8,4 +8,8 @@ class Rounding {
     $floored_to_new_precision_int = floor($rounded_to_old_precision_int * pow(10, $new_precision - $old_precision));
     return $floored_to_new_precision_int / pow(10, $new_precision);
   }
+
+  public static function round_fraction_up($number) {
+    return ceil($number);
+  }
 }

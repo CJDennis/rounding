@@ -48,4 +48,12 @@ trait RoundingTestCommon {
   public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
     $this->assertTrue(1.001 === Rounding::round_fraction_up(1.000001, 3));
   }
+
+  public function testShouldNotRoundAnIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $this->assertTrue(1.0 === Rounding::round_fraction_up(1.000499, 0, 3));
+  }
+
+  public function testShouldRoundTheFractionalPartOfANumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $this->assertTrue(2.0 === Rounding::round_fraction_up(1.000500, 0, 3));
+  }
 }

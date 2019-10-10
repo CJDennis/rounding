@@ -20,4 +20,8 @@ class Rounding {
     }
     return $ceiling_to_precision_int / pow(10, $new_precision);
   }
+
+  public static function round_fraction_down($number) {
+    return floor($number);
+  }
 }

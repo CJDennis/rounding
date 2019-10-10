@@ -21,9 +21,15 @@ class Rounding {
     return $ceiling_to_precision_int / pow(10, $new_precision);
   }
 
-  public static function round_fraction_down($number, $precision = 0) {
-    $adjusted_to_precision_int = $number * pow(10, $precision);
-    $floored_to_precision_int = floor($adjusted_to_precision_int);
-    return $floored_to_precision_int / pow(10, $precision);
+  public static function round_fraction_down($number, int $new_precision = 0, int $old_precision = null) {
+    if ($old_precision === null) {
+      $adjusted_to_precision_int = $number * pow(10, $new_precision);
+      $floored_to_precision_int = floor($adjusted_to_precision_int);
+    }
+    else {
+      $adjusted_to_precision_int = round($number * pow(10, $old_precision));
+      $floored_to_precision_int = floor($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+    }
+    return $floored_to_precision_int / pow(10, $new_precision);
   }
 }

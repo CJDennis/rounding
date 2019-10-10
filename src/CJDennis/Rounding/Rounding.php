@@ -21,7 +21,9 @@ class Rounding {
     return $ceiling_to_precision_int / pow(10, $new_precision);
   }
 
-  public static function round_fraction_down($number) {
-    return floor($number);
+  public static function round_fraction_down($number, $precision = 0) {
+    $adjusted_to_precision_int = $number * pow(10, $precision);
+    $floored_to_precision_int = floor($adjusted_to_precision_int);
+    return $floored_to_precision_int / pow(10, $precision);
   }
 }

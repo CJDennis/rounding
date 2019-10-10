@@ -40,4 +40,12 @@ trait RoundingTestCommon {
   public function testShouldRoundTheFractionalPartOfANumberUpToTheNextInteger() {
     $this->assertTrue(2.0 === Rounding::round_fraction_up(1.000001));
   }
+
+  public function testShouldNotRoundAnIntegerUpToThreeDecimalPlaces() {
+    $this->assertTrue(1.0 === Rounding::round_fraction_up(1.000000, 3));
+  }
+
+  public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
+    $this->assertTrue(1.001 === Rounding::round_fraction_up(1.000001, 3));
+  }
 }

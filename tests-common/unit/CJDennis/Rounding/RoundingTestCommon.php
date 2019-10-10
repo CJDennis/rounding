@@ -10,50 +10,86 @@ trait RoundingTestCommon {
 
   // tests
   public function testShouldRoundTheFractionalPartOfANumberBelowAHalfDownToTheNextInteger() {
-    $this->assertTrue(1.0 === Rounding::round(1.499999));
+    $expected = 1.0;
+    $actual = Rounding::round(1.499999);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberExactlyAHalfUpToTheNextInteger() {
-    $this->assertTrue(2.0 === Rounding::round(1.5));
+    $expected = 2.0;
+    $actual = Rounding::round(1.5);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesBelowAHalfDownToTheNextInteger() {
-    $this->assertTrue(1.499 === Rounding::round(1.499499, 3));
+    $expected = 1.499;
+    $actual = Rounding::round(1.499499, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesExactlyAHalfUpToTheNextInteger() {
-    $this->assertTrue(1.5 === Rounding::round(1.4995, 3));
+    $expected = 1.5;
+    $actual = Rounding::round(1.4995, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesBelowAHalfDownToTheNextIntegerConsideringFourDecimalPlaces() {
-    $this->assertTrue(1.499 === Rounding::round(1.499499, 3, 4));
+    $expected = 1.499;
+    $actual = Rounding::round(1.499499, 3, 4);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesExactlyAHalfUpToTheNextIntegerConsideringFourDecimalPlaces() {
-    $this->assertTrue(1.499 === Rounding::round(1.4995, 3, 4));
+    $expected = 1.499;
+    $actual = Rounding::round(1.4995, 3, 4);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldNotRoundAnIntegerUpToTheNextInteger() {
-    $this->assertTrue(1.0 === Rounding::round_fraction_up(1.000000));
+    $expected = 1.0;
+    $actual = Rounding::round_fraction_up(1.000000);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberUpToTheNextInteger() {
-    $this->assertTrue(2.0 === Rounding::round_fraction_up(1.000001));
+    $expected = 2.0;
+    $actual = Rounding::round_fraction_up(1.000001);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldNotRoundAnIntegerUpToThreeDecimalPlaces() {
-    $this->assertTrue(1.0 === Rounding::round_fraction_up(1.000000, 3));
+    $expected = 1.0;
+    $actual = Rounding::round_fraction_up(1.000000, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
-    $this->assertTrue(1.001 === Rounding::round_fraction_up(1.000001, 3));
+    $expected = 1.001;
+    $actual = Rounding::round_fraction_up(1.000001, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldNotRoundAnIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $this->assertTrue(1.0 === Rounding::round_fraction_up(1.000499, 0, 3));
+    $expected = 1.0;
+    $actual = Rounding::round_fraction_up(1.000499, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundTheFractionalPartOfANumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $this->assertTrue(2.0 === Rounding::round_fraction_up(1.000500, 0, 3));
+    $expected = 2.0;
+    $actual = Rounding::round_fraction_up(1.000500, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
   }
 }

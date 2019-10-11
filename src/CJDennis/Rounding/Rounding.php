@@ -32,4 +32,8 @@ class Rounding {
     }
     return $floored_to_precision_int / pow(10, $new_precision);
   }
+
+  public static function round_towards_zero($number) {
+    return $number < 0? ceil($number): floor($number);
+  }
 }

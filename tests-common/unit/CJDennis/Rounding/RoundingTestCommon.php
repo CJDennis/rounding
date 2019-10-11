@@ -262,4 +262,32 @@ trait RoundingTestCommon {
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
+
+  public function testShouldNotRoundAnIntegerToThreeDecimalPlacesAwayFromZero() {
+    $expected = 1.0;
+    $actual = Rounding::round_away_from_zero(1.000000, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANumberToThreeDecimalPlacesAwayFromZero() {
+    $expected = 1.001;
+    $actual = Rounding::round_away_from_zero(1.000001, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldNotRoundANegativeIntegerToThreeDecimalPlacesAwayFromZero() {
+    $expected = -1.0;
+    $actual = Rounding::round_away_from_zero(-1.000000, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberToThreeDecimalPlacesAwayFromZero() {
+    $expected = -1.001;
+    $actual = Rounding::round_away_from_zero(-1.000001, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
 }

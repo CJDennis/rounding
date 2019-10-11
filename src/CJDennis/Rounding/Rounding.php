@@ -35,12 +35,28 @@ class Rounding {
 
   public static function round_towards_zero($number, int $new_precision = 0, int $old_precision = null) {
     if ($old_precision === null) {
-      $adjusted_to_precision_int = $number * pow(10, $new_precision);
-      $rounded_to_precision_int = $number < 0? ceil($adjusted_to_precision_int): floor($adjusted_to_precision_int);
+      $adjusted_to_precision_int = $number * pow(10, $new_precision) + 0;
+      if ($number < 0) {
+        $rounded_to_precision_int = ceil($adjusted_to_precision_int);
+      }
+      elseif ($number > 0) {
+        $rounded_to_precision_int = floor($adjusted_to_precision_int);
+      }
+      else {
+        $rounded_to_precision_int = $number * $adjusted_to_precision_int;
+      }
     }
     else {
       $adjusted_to_precision_int = round($number * pow(10, $old_precision));
-      $rounded_to_precision_int = $number < 0? ceil($adjusted_to_precision_int * pow(10, $new_precision - $old_precision)): floor($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+      if ($number < 0) {
+        $rounded_to_precision_int = ceil($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+      }
+      elseif ($number > 0) {
+        $rounded_to_precision_int = floor($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+      }
+      else {
+        $rounded_to_precision_int = $number;
+      }
     }
     return $rounded_to_precision_int / pow(10, $new_precision);
   }

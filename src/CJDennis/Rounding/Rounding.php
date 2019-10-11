@@ -33,7 +33,9 @@ class Rounding {
     return $floored_to_precision_int / pow(10, $new_precision);
   }
 
-  public static function round_towards_zero($number) {
-    return $number < 0? ceil($number): floor($number);
+  public static function round_towards_zero($number, $precision = 0) {
+    $adjusted_to_precision_int = $number * pow(10, $precision);
+    $floored_to_precision_int = $number < 0? ceil($adjusted_to_precision_int): floor($adjusted_to_precision_int);
+    return $floored_to_precision_int / pow(10, $precision);
   }
 }

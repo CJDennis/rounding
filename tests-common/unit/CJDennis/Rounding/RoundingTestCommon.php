@@ -134,4 +134,18 @@ trait RoundingTestCommon {
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
+
+  public function testShouldNotRoundAnIntegerToTheNextIntegerTowardsZero() {
+    $expected = 2.0;
+    $actual = Rounding::round_towards_zero(2.000000);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANumberToTheNextIntegerTowardsZero() {
+    $expected = 1.0;
+    $actual = Rounding::round_towards_zero(1.999999);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
 }

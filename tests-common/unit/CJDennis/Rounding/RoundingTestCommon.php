@@ -218,4 +218,20 @@ trait RoundingTestCommon {
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
+
+  public function testShouldRoundNegativeZeroTowardsZeroToNegativeZero() {
+    $expected = -0.0;
+    $actual = Rounding::round_towards_zero(-0.0);
+    $this->assertSame($expected, $actual);
+    $this->assertSame((string)$expected, (string)$actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeZeroTowardsZeroToNegativeZeroConsideringThreeDecimalPlaces() {
+    $expected = -0.0;
+    $actual = Rounding::round_towards_zero(-0.0, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertSame((string)$expected, (string)$actual);
+    $this->assertTrue($expected === $actual);
+  }
 }

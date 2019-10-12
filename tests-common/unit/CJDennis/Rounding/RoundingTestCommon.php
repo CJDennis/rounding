@@ -222,16 +222,14 @@ trait RoundingTestCommon {
   public function testShouldRoundNegativeZeroTowardsZeroToNegativeZero() {
     $expected = -0.0;
     $actual = Rounding::round_towards_zero(-0.0);
-    $this->assertSame($expected, $actual);
-    $this->assertSame((string)$expected, (string)$actual);
+    $this->assertSame(-INF, $actual ** -1);
     $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundNegativeZeroTowardsZeroToNegativeZeroConsideringThreeDecimalPlaces() {
     $expected = -0.0;
     $actual = Rounding::round_towards_zero(-0.0, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertSame((string)$expected, (string)$actual);
+    $this->assertSame(-INF, $actual ** -1);
     $this->assertTrue($expected === $actual);
   }
 
@@ -322,16 +320,14 @@ trait RoundingTestCommon {
   public function testShouldRoundNegativeZeroAwayFromZeroToNegativeZero() {
     $expected = -0.0;
     $actual = Rounding::round_away_from_zero(-0.0);
-    $this->assertSame($expected, $actual);
-    $this->assertSame((string)$expected, (string)$actual);
+    $this->assertSame(-INF, $actual ** -1);
     $this->assertTrue($expected === $actual);
   }
 
   public function testShouldRoundNegativeZeroAwayFromZeroToNegativeZeroConsideringThreeDecimalPlaces() {
     $expected = -0.0;
     $actual = Rounding::round_away_from_zero(-0.0, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertSame((string)$expected, (string)$actual);
+    $this->assertSame(-INF, $actual ** -1);
     $this->assertTrue($expected === $actual);
   }
 }

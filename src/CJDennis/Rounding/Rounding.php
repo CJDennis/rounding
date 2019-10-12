@@ -61,9 +61,15 @@ class Rounding {
     return $rounded_to_precision_int / pow(10, $new_precision);
   }
 
-  public static function round_away_from_zero($number, $precision = 0) {
-    $adjusted_to_precision_int = $number * pow(10, $precision);
-    $rounded_to_precision_int = $number < 0? floor($adjusted_to_precision_int): ceil($adjusted_to_precision_int);
-    return $rounded_to_precision_int / pow(10, $precision);
+  public static function round_away_from_zero($number, int $new_precision = 0, int $old_precision = null) {
+    if ($old_precision === null) {
+      $adjusted_to_precision_int = $number * pow(10, $new_precision);
+      $rounded_to_precision_int = $number < 0? floor($adjusted_to_precision_int): ceil($adjusted_to_precision_int);
+    }
+    else {
+      $adjusted_to_precision_int = round($number * pow(10, $old_precision));
+      $rounded_to_precision_int = $number < 0? floor($adjusted_to_precision_int * pow(10, $new_precision - $old_precision)): ceil($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+    }
+    return $rounded_to_precision_int / pow(10, $new_precision);
   }
 }

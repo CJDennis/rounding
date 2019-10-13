@@ -65,6 +65,20 @@ trait RoundingTestCommon {
     $this->assertTrue($expected === $actual);
   }
 
+  public function testShouldNotRoundANegativeIntegerUpToTheNextInteger() {
+    $expected = -2.0;
+    $actual = Rounding::round_fraction_up(-2.000000);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberUpToTheNextInteger() {
+    $expected = -1.0;
+    $actual = Rounding::round_fraction_up(-1.999999);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
   public function testShouldNotRoundAnIntegerUpToThreeDecimalPlaces() {
     $expected = 1.0;
     $actual = Rounding::round_fraction_up(1.000000, 3);
@@ -75,6 +89,20 @@ trait RoundingTestCommon {
   public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
     $expected = 1.001;
     $actual = Rounding::round_fraction_up(1.000001, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldNotRoundANegativeIntegerUpToThreeDecimalPlaces() {
+    $expected = -2.0;
+    $actual = Rounding::round_fraction_up(-2.000000, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberUpToThreeDecimalPlaces() {
+    $expected = -1.999;
+    $actual = Rounding::round_fraction_up(-1.999999, 3);
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
@@ -93,6 +121,34 @@ trait RoundingTestCommon {
     $this->assertTrue($expected === $actual);
   }
 
+  public function testShouldNotRoundANegativeIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $expected = -2.0;
+    $actual = Rounding::round_fraction_up(-1.999500, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $expected = -1.0;
+    $actual = Rounding::round_fraction_up(-1.999499, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeZeroUpToNegativeZero() {
+    $expected = -0.0;
+    $actual = Rounding::round_fraction_up(-0.0);
+    $this->assertSame(-INF, $actual ** -1);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeZeroUpToNegativeZeroConsideringThreeDecimalPlaces() {
+    $expected = -0.0;
+    $actual = Rounding::round_fraction_up(-0.0, 0, 3);
+    $this->assertSame(-INF, $actual ** -1);
+    $this->assertTrue($expected === $actual);
+  }
+
   public function testShouldNotRoundAnIntegerDownToTheNextInteger() {
     $expected = 2.0;
     $actual = Rounding::round_fraction_down(2.000000);
@@ -103,6 +159,20 @@ trait RoundingTestCommon {
   public function testShouldRoundTheFractionalPartOfANumberDownToTheNextInteger() {
     $expected = 1.0;
     $actual = Rounding::round_fraction_down(1.999999);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldNotRoundANegativeIntegerDownToTheNextInteger() {
+    $expected = -1.0;
+    $actual = Rounding::round_fraction_down(-1.000000);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberDownToTheNextInteger() {
+    $expected = -2.0;
+    $actual = Rounding::round_fraction_down(-1.000001);
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
@@ -121,6 +191,20 @@ trait RoundingTestCommon {
     $this->assertTrue($expected === $actual);
   }
 
+  public function testShouldNotRoundANegativeIntegerDownToThreeDecimalPlaces() {
+    $expected = -1.0;
+    $actual = Rounding::round_fraction_down(-1.000000, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberDownToThreeDecimalPlaces() {
+    $expected = -1.001;
+    $actual = Rounding::round_fraction_down(-1.000001, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
   public function testShouldNotRoundAnIntegerDownToTheNextIntegerConsideringThreeDecimalPlaces() {
     $expected = 2.0;
     $actual = Rounding::round_fraction_down(1.999500, 0, 3);
@@ -132,6 +216,34 @@ trait RoundingTestCommon {
     $expected = 1.0;
     $actual = Rounding::round_fraction_down(1.999499, 0, 3);
     $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldNotRoundANegativeIntegerDownToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $expected = -1.0;
+    $actual = Rounding::round_fraction_down(-1.000499, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundTheFractionalPartOfANegativeNumberDownToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $expected = -2.0;
+    $actual = Rounding::round_fraction_down(-1.000500, 0, 3);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeZeroDownToNegativeZero() {
+    $expected = -0.0;
+    $actual = Rounding::round_fraction_down(-0.0);
+    $this->assertSame(-INF, $actual ** -1);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeZeroDownToNegativeZeroConsideringThreeDecimalPlaces() {
+    $expected = -0.0;
+    $actual = Rounding::round_fraction_down(-0.0, 0, 3);
+    $this->assertSame(-INF, $actual ** -1);
     $this->assertTrue($expected === $actual);
   }
 

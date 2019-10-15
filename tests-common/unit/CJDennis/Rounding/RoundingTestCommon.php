@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 namespace CJDennis\Rounding;
 
 trait RoundingTestCommon {
@@ -51,30 +51,72 @@ trait RoundingTestCommon {
     $this->assertTrue($expected === $actual);
   }
 
-  public function testShouldNotRoundAnIntegerUpToTheNextInteger() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_up(1.000000);
+  public function testShouldRoundTwoUpToTwo() {
+    $expected = 2.0;
+    $actual = Rounding::round_fraction_up(2.000000);
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
 
-  public function testShouldRoundTheFractionalPartOfANumberUpToTheNextInteger() {
+  public function testShouldRoundANumberJustAboveOneUpToTwo() {
     $expected = 2.0;
     $actual = Rounding::round_fraction_up(1.000001);
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
 
-  public function testShouldNotRoundANegativeIntegerUpToTheNextInteger() {
-    $expected = -2.0;
-    $actual = Rounding::round_fraction_up(-2.000000);
+  public function testShouldRoundOneUpToOne() {
+    $expected = 1.0;
+    $actual = Rounding::round_fraction_up(1.000000);
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
 
-  public function testShouldRoundTheFractionalPartOfANegativeNumberUpToTheNextInteger() {
+  public function testShouldRoundANumberJustAboveZeroUpToOne() {
+    $expected = 1.0;
+    $actual = Rounding::round_fraction_up(0.000001);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundZeroUpToZero() {
+    $expected = 0.0;
+    $actual = Rounding::round_fraction_up(0.0);
+    $this->assertSame(INF, $actual ** -1);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeZeroUpToNegativeZero() {
+    $expected = -0.0;
+    $actual = Rounding::round_fraction_up(-0.0);
+    $this->assertSame(-INF, $actual ** -1);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundANumberJustAboveNegativeOneUpToNegativeZero() {
+    $expected = -0.0;
+    $actual = Rounding::round_fraction_up(-0.999999);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeOneUpToNegativeOne() {
+    $expected = -1.0;
+    $actual = Rounding::round_fraction_up(-1.000000);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundANumberJustAboveNegativeTwoUpToNegativeOne() {
     $expected = -1.0;
     $actual = Rounding::round_fraction_up(-1.999999);
+    $this->assertSame($expected, $actual);
+    $this->assertTrue($expected === $actual);
+  }
+
+  public function testShouldRoundNegativeTwoUpToNegativeTwo() {
+    $expected = -2.0;
+    $actual = Rounding::round_fraction_up(-2.000000);
     $this->assertSame($expected, $actual);
     $this->assertTrue($expected === $actual);
   }
@@ -132,13 +174,6 @@ trait RoundingTestCommon {
     $expected = -1.0;
     $actual = Rounding::round_fraction_up(-1.999499, 0, 3);
     $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
-  }
-
-  public function testShouldRoundNegativeZeroUpToNegativeZero() {
-    $expected = -0.0;
-    $actual = Rounding::round_fraction_up(-0.0);
-    $this->assertSame(-INF, $actual ** -1);
     $this->assertTrue($expected === $actual);
   }
 

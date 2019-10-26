@@ -54,8 +54,24 @@ trait RoundingTestCommon {
     $this->assertIdentical(2.0, Rounding::round_fraction_up(1.000001));
   }
 
+  public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
+    $this->assertIdentical(1.001, Rounding::round_fraction_up(1.000001, 3));
+  }
+
+  public function testShouldRoundTheFractionalPartOfANumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $this->assertIdentical(2.0, Rounding::round_fraction_up(1.000500, 0, 3));
+  }
+
   public function testShouldRoundOneUpToOne() {
     $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000000));
+  }
+
+  public function testShouldNotRoundAnIntegerUpToThreeDecimalPlaces() {
+    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000000, 3));
+  }
+
+  public function testShouldNotRoundAnIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000499, 0, 3));
   }
 
   public function testShouldRoundANumberJustAboveZeroUpToOne() {
@@ -70,6 +86,10 @@ trait RoundingTestCommon {
     $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.0));
   }
 
+  public function testShouldRoundNegativeZeroUpToNegativeZeroConsideringThreeDecimalPlaces() {
+    $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.0, 0, 3));
+  }
+
   public function testShouldRoundANumberJustAboveNegativeOneUpToNegativeZero() {
     $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.999999));
   }
@@ -82,44 +102,24 @@ trait RoundingTestCommon {
     $this->assertIdentical(-1.0, Rounding::round_fraction_up(-1.999999));
   }
 
-  public function testShouldRoundNegativeTwoUpToNegativeTwo() {
-    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-2.000000));
-  }
-
-  public function testShouldNotRoundAnIntegerUpToThreeDecimalPlaces() {
-    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000000, 3));
-  }
-
-  public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
-    $this->assertIdentical(1.001, Rounding::round_fraction_up(1.000001, 3));
-  }
-
-  public function testShouldNotRoundANegativeIntegerUpToThreeDecimalPlaces() {
-    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-2.000000, 3));
-  }
-
   public function testShouldRoundTheFractionalPartOfANegativeNumberUpToThreeDecimalPlaces() {
     $this->assertIdentical(-1.999, Rounding::round_fraction_up(-1.999999, 3));
-  }
-
-  public function testShouldNotRoundAnIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000499, 0, 3));
-  }
-
-  public function testShouldRoundTheFractionalPartOfANumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $this->assertIdentical(2.0, Rounding::round_fraction_up(1.000500, 0, 3));
-  }
-
-  public function testShouldNotRoundANegativeIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-1.999500, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
     $this->assertIdentical(-1.0, Rounding::round_fraction_up(-1.999499, 0, 3));
   }
 
-  public function testShouldRoundNegativeZeroUpToNegativeZeroConsideringThreeDecimalPlaces() {
-    $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.0, 0, 3));
+  public function testShouldRoundNegativeTwoUpToNegativeTwo() {
+    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-2.000000));
+  }
+
+  public function testShouldNotRoundANegativeIntegerUpToThreeDecimalPlaces() {
+    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-2.000000, 3));
+  }
+
+  public function testShouldNotRoundANegativeIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
+    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-1.999500, 0, 3));
   }
 
   public function testShouldNotRoundAnIntegerDownToTheNextInteger() {

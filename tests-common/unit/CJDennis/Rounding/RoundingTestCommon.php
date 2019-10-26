@@ -1,480 +1,292 @@
 <?php /** @noinspection PhpUnused */
 namespace CJDennis\Rounding;
 
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+
 trait RoundingTestCommon {
   protected function _before() {
+    ComparatorFactory::getInstance()->reset();
+    ComparatorFactory::getInstance()->register(new FloatComparator);
   }
 
   protected function _after() {
   }
 
+  public static function assertIdentical($expected, $actual, float $delta = 0.0, string $message = '') {
+    if ($expected === 0.0 && $actual === 0.0) {
+      static::assertSame((string)$expected, (string)$actual, $message);
+    }
+    else {
+      static::assertEqualsWithDelta($expected, $actual, $delta, $message);
+    }
+  }
+
   // tests
   public function testShouldRoundTheFractionalPartOfANumberBelowAHalfDownToTheNextInteger() {
-    $expected = 1.0;
-    $actual = Rounding::round(1.499999);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round(1.499999));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberExactlyAHalfUpToTheNextInteger() {
-    $expected = 2.0;
-    $actual = Rounding::round(1.5);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round(1.5));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesBelowAHalfDownToTheNextInteger() {
-    $expected = 1.499;
-    $actual = Rounding::round(1.499499, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.499, Rounding::round(1.499499, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesExactlyAHalfUpToTheNextInteger() {
-    $expected = 1.5;
-    $actual = Rounding::round(1.4995, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.5, Rounding::round(1.4995, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesBelowAHalfDownToTheNextIntegerConsideringFourDecimalPlaces() {
-    $expected = 1.499;
-    $actual = Rounding::round(1.499499, 3, 4);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.499, Rounding::round(1.499499, 3, 4));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberAfterThreeDecimalPlacesExactlyAHalfUpToTheNextIntegerConsideringFourDecimalPlaces() {
-    $expected = 1.499;
-    $actual = Rounding::round(1.4995, 3, 4);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.499, Rounding::round(1.4995, 3, 4));
   }
 
   public function testShouldRoundTwoUpToTwo() {
-    $expected = 2.0;
-    $actual = Rounding::round_fraction_up(2.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_fraction_up(2.000000));
   }
 
   public function testShouldRoundANumberJustAboveOneUpToTwo() {
-    $expected = 2.0;
-    $actual = Rounding::round_fraction_up(1.000001);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_fraction_up(1.000001));
   }
 
   public function testShouldRoundOneUpToOne() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_up(1.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000000));
   }
 
   public function testShouldRoundANumberJustAboveZeroUpToOne() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_up(0.000001);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_fraction_up(0.000001));
   }
 
   public function testShouldRoundZeroUpToZero() {
-    $expected = 0.0;
-    $actual = Rounding::round_fraction_up(0.0);
-    $this->assertSame(INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(0.0, Rounding::round_fraction_up(0.0));
   }
 
   public function testShouldRoundNegativeZeroUpToNegativeZero() {
-    $expected = -0.0;
-    $actual = Rounding::round_fraction_up(-0.0);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.0));
   }
 
   public function testShouldRoundANumberJustAboveNegativeOneUpToNegativeZero() {
-    $expected = -0.0;
-    $actual = Rounding::round_fraction_up(-0.999999);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.999999));
   }
 
   public function testShouldRoundNegativeOneUpToNegativeOne() {
-    $expected = -1.0;
-    $actual = Rounding::round_fraction_up(-1.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_fraction_up(-1.000000));
   }
 
   public function testShouldRoundANumberJustAboveNegativeTwoUpToNegativeOne() {
-    $expected = -1.0;
-    $actual = Rounding::round_fraction_up(-1.999999);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_fraction_up(-1.999999));
   }
 
   public function testShouldRoundNegativeTwoUpToNegativeTwo() {
-    $expected = -2.0;
-    $actual = Rounding::round_fraction_up(-2.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-2.000000));
   }
 
   public function testShouldNotRoundAnIntegerUpToThreeDecimalPlaces() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_up(1.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberUpToThreeDecimalPlaces() {
-    $expected = 1.001;
-    $actual = Rounding::round_fraction_up(1.000001, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.001, Rounding::round_fraction_up(1.000001, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerUpToThreeDecimalPlaces() {
-    $expected = -2.0;
-    $actual = Rounding::round_fraction_up(-2.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-2.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberUpToThreeDecimalPlaces() {
-    $expected = -1.999;
-    $actual = Rounding::round_fraction_up(-1.999999, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.999, Rounding::round_fraction_up(-1.999999, 3));
   }
 
   public function testShouldNotRoundAnIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_up(1.000499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_fraction_up(1.000499, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = 2.0;
-    $actual = Rounding::round_fraction_up(1.000500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_fraction_up(1.000500, 0, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = -2.0;
-    $actual = Rounding::round_fraction_up(-1.999500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_fraction_up(-1.999500, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberUpToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = -1.0;
-    $actual = Rounding::round_fraction_up(-1.999499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_fraction_up(-1.999499, 0, 3));
   }
 
   public function testShouldRoundNegativeZeroUpToNegativeZeroConsideringThreeDecimalPlaces() {
-    $expected = -0.0;
-    $actual = Rounding::round_fraction_up(-0.0, 0, 3);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_fraction_up(-0.0, 0, 3));
   }
 
   public function testShouldNotRoundAnIntegerDownToTheNextInteger() {
-    $expected = 2.0;
-    $actual = Rounding::round_fraction_down(2.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_fraction_down(2.000000));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberDownToTheNextInteger() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_down(1.999999);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_fraction_down(1.999999));
   }
 
   public function testShouldNotRoundANegativeIntegerDownToTheNextInteger() {
-    $expected = -1.0;
-    $actual = Rounding::round_fraction_down(-1.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_fraction_down(-1.000000));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberDownToTheNextInteger() {
-    $expected = -2.0;
-    $actual = Rounding::round_fraction_down(-1.000001);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_fraction_down(-1.000001));
   }
 
   public function testShouldNotRoundAnIntegerDownToThreeDecimalPlaces() {
-    $expected = 2.0;
-    $actual = Rounding::round_fraction_down(2.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_fraction_down(2.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberDownToThreeDecimalPlaces() {
-    $expected = 1.999;
-    $actual = Rounding::round_fraction_down(1.999999, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.999, Rounding::round_fraction_down(1.999999, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerDownToThreeDecimalPlaces() {
-    $expected = -1.0;
-    $actual = Rounding::round_fraction_down(-1.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_fraction_down(-1.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberDownToThreeDecimalPlaces() {
-    $expected = -1.001;
-    $actual = Rounding::round_fraction_down(-1.000001, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.001, Rounding::round_fraction_down(-1.000001, 3));
   }
 
   public function testShouldNotRoundAnIntegerDownToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = 2.0;
-    $actual = Rounding::round_fraction_down(1.999500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_fraction_down(1.999500, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberDownToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = 1.0;
-    $actual = Rounding::round_fraction_down(1.999499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_fraction_down(1.999499, 0, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerDownToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = -1.0;
-    $actual = Rounding::round_fraction_down(-1.000499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_fraction_down(-1.000499, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberDownToTheNextIntegerConsideringThreeDecimalPlaces() {
-    $expected = -2.0;
-    $actual = Rounding::round_fraction_down(-1.000500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_fraction_down(-1.000500, 0, 3));
   }
 
   public function testShouldRoundNegativeZeroDownToNegativeZero() {
-    $expected = -0.0;
-    $actual = Rounding::round_fraction_down(-0.0);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_fraction_down(-0.0));
   }
 
   public function testShouldRoundNegativeZeroDownToNegativeZeroConsideringThreeDecimalPlaces() {
-    $expected = -0.0;
-    $actual = Rounding::round_fraction_down(-0.0, 0, 3);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_fraction_down(-0.0, 0, 3));
   }
 
   public function testShouldNotRoundAnIntegerToTheNextIntegerTowardsZero() {
-    $expected = 2.0;
-    $actual = Rounding::round_towards_zero(2.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_towards_zero(2.000000));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberToTheNextIntegerTowardsZero() {
-    $expected = 1.0;
-    $actual = Rounding::round_towards_zero(1.999999);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_towards_zero(1.999999));
   }
 
   public function testShouldNotRoundANegativeIntegerToTheNextIntegerTowardsZero() {
-    $expected = -2.0;
-    $actual = Rounding::round_towards_zero(-2.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_towards_zero(-2.000000));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberToTheNextIntegerTowardsZero() {
-    $expected = -1.0;
-    $actual = Rounding::round_towards_zero(-1.999999);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_towards_zero(-1.999999));
   }
 
   public function testShouldNotRoundAnIntegerToThreeDecimalPlacesTowardsZero() {
-    $expected = 2.0;
-    $actual = Rounding::round_towards_zero(2.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_towards_zero(2.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberToThreeDecimalPlacesTowardsZero() {
-    $expected = 1.999;
-    $actual = Rounding::round_towards_zero(1.999999, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.999, Rounding::round_towards_zero(1.999999, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerToThreeDecimalPlacesTowardsZero() {
-    $expected = -2.0;
-    $actual = Rounding::round_towards_zero(-2.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_towards_zero(-2.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberToThreeDecimalPlacesTowardsZero() {
-    $expected = -1.999;
-    $actual = Rounding::round_towards_zero(-1.999999, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.999, Rounding::round_towards_zero(-1.999999, 3));
   }
 
   public function testShouldNotRoundAnIntegerToTheNextIntegerTowardsZeroConsideringThreeDecimalPlaces() {
-    $expected = 2.0;
-    $actual = Rounding::round_towards_zero(1.999500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_towards_zero(1.999500, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberToTheNextIntegerTowardsZeroConsideringThreeDecimalPlaces() {
-    $expected = 1.0;
-    $actual = Rounding::round_towards_zero(1.999499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_towards_zero(1.999499, 0, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerToTheNextIntegerTowardsZeroConsideringThreeDecimalPlaces() {
-    $expected = -2.0;
-    $actual = Rounding::round_towards_zero(-1.999500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_towards_zero(-1.999500, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberToTheNextIntegerTowardsZeroConsideringThreeDecimalPlaces() {
-    $expected = -1.0;
-    $actual = Rounding::round_towards_zero(-1.999499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_towards_zero(-1.999499, 0, 3));
   }
 
   public function testShouldRoundNegativeZeroTowardsZeroToNegativeZero() {
-    $expected = -0.0;
-    $actual = Rounding::round_towards_zero(-0.0);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_towards_zero(-0.0));
   }
 
   public function testShouldRoundNegativeZeroTowardsZeroToNegativeZeroConsideringThreeDecimalPlaces() {
-    $expected = -0.0;
-    $actual = Rounding::round_towards_zero(-0.0, 0, 3);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_towards_zero(-0.0, 0, 3));
   }
 
   public function testShouldNotRoundAnIntegerToTheNextIntegerAwayFromZero() {
-    $expected = 1.0;
-    $actual = Rounding::round_away_from_zero(1.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_away_from_zero(1.000000));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberToTheNextIntegerAwayFromZero() {
-    $expected = 2.0;
-    $actual = Rounding::round_away_from_zero(1.000001);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_away_from_zero(1.000001));
   }
 
   public function testShouldNotRoundANegativeIntegerToTheNextIntegerAwayFromZero() {
-    $expected = -1.0;
-    $actual = Rounding::round_away_from_zero(-1.000000);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_away_from_zero(-1.000000));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberToTheNextIntegerAwayFromZero() {
-    $expected = -2.0;
-    $actual = Rounding::round_away_from_zero(-1.000001);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_away_from_zero(-1.000001));
   }
 
   public function testShouldNotRoundAnIntegerToThreeDecimalPlacesAwayFromZero() {
-    $expected = 1.0;
-    $actual = Rounding::round_away_from_zero(1.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_away_from_zero(1.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberToThreeDecimalPlacesAwayFromZero() {
-    $expected = 1.001;
-    $actual = Rounding::round_away_from_zero(1.000001, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.001, Rounding::round_away_from_zero(1.000001, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerToThreeDecimalPlacesAwayFromZero() {
-    $expected = -1.0;
-    $actual = Rounding::round_away_from_zero(-1.000000, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_away_from_zero(-1.000000, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberToThreeDecimalPlacesAwayFromZero() {
-    $expected = -1.001;
-    $actual = Rounding::round_away_from_zero(-1.000001, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.001, Rounding::round_away_from_zero(-1.000001, 3));
   }
 
   public function testShouldNotRoundAnIntegerToTheNextIntegerAwayFromZeroConsideringThreeDecimalPlaces() {
-    $expected = 1.0;
-    $actual = Rounding::round_away_from_zero(1.000499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(1.0, Rounding::round_away_from_zero(1.000499, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANumberToTheNextIntegerAwayFromZeroConsideringThreeDecimalPlaces() {
-    $expected = 2.0;
-    $actual = Rounding::round_away_from_zero(1.000500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(2.0, Rounding::round_away_from_zero(1.000500, 0, 3));
   }
 
   public function testShouldNotRoundANegativeIntegerToTheNextIntegerAwayFromZeroConsideringThreeDecimalPlaces() {
-    $expected = -1.0;
-    $actual = Rounding::round_away_from_zero(-1.000499, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-1.0, Rounding::round_away_from_zero(-1.000499, 0, 3));
   }
 
   public function testShouldRoundTheFractionalPartOfANegativeNumberToTheNextIntegerAwayFromZeroConsideringThreeDecimalPlaces() {
-    $expected = -2.0;
-    $actual = Rounding::round_away_from_zero(-1.000500, 0, 3);
-    $this->assertSame($expected, $actual);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-2.0, Rounding::round_away_from_zero(-1.000500, 0, 3));
   }
 
   public function testShouldRoundNegativeZeroAwayFromZeroToNegativeZero() {
-    $expected = -0.0;
-    $actual = Rounding::round_away_from_zero(-0.0);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_away_from_zero(-0.0));
   }
 
   public function testShouldRoundNegativeZeroAwayFromZeroToNegativeZeroConsideringThreeDecimalPlaces() {
-    $expected = -0.0;
-    $actual = Rounding::round_away_from_zero(-0.0, 0, 3);
-    $this->assertSame(-INF, $actual ** -1);
-    $this->assertTrue($expected === $actual);
+    $this->assertIdentical(-0.0, Rounding::round_away_from_zero(-0.0, 0, 3));
   }
 }

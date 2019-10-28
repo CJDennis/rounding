@@ -10,33 +10,17 @@ class Rounding {
   }
 
   public static function round_fraction_up($number, int $new_precision = 0, int $old_precision = null) {
-    $ceiling_to_precision_int = $number;
     if ($number !== 0.0) {  // both 0.0 and -0.0
-      if ($old_precision === null) {
-        $old_precision = $new_precision;
-        $adjusted_to_precision_int = $number * pow(10, $new_precision);
-      }
-      else {
-        $adjusted_to_precision_int = round($number * pow(10, $old_precision));
-      }
-      $ceiling_to_precision_int = ceil($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+      $number = ceil(static::adjust_precision($number, $new_precision, $old_precision));
     }
-    return $ceiling_to_precision_int / pow(10, $new_precision);
+    return $number / pow(10, $new_precision);
   }
 
   public static function round_fraction_down($number, int $new_precision = 0, int $old_precision = null) {
-    $floored_to_precision_int = $number;
     if ($number !== 0.0) {  // both 0.0 and -0.0
-      if ($old_precision === null) {
-        $old_precision = $new_precision;
-        $adjusted_to_precision_int = $number * pow(10, $new_precision);
-      }
-      else {
-        $adjusted_to_precision_int = round($number * pow(10, $old_precision));
-      }
-      $floored_to_precision_int = floor($adjusted_to_precision_int * pow(10, $new_precision - $old_precision));
+      $number = floor(static::adjust_precision($number, $new_precision, $old_precision));
     }
-    return $floored_to_precision_int / pow(10, $new_precision);
+    return $number / pow(10, $new_precision);
   }
 
   public static function round_towards_zero($number, int $new_precision = 0, int $old_precision = null) {
@@ -93,5 +77,15 @@ class Rounding {
       }
     }
     return $rounded_to_precision_int / pow(10, $new_precision);
+  }
+
+  public static function adjust_precision($number, int $new_precision, int $old_precision = null) {
+    if ($old_precision === null) {
+      $old_precision = 0;
+    }
+    else {
+      $number = round($number * pow(10, $old_precision));
+    }
+    return $number * pow(10, $new_precision - $old_precision);
   }
 }

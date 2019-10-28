@@ -22,6 +22,10 @@ trait RoundingTestCommon {
   }
 
   // tests
+  public function testShouldAdjustThePrecision() {
+    $this->assertIdentical(1.499999, Rounding::adjust_precision(1.499999, 0));
+  }
+
   public function testShouldRoundTheFractionalPartOfANumberBelowAHalfDownToTheNextInteger() {
     $this->assertIdentical(1.0, Rounding::round(1.499999));
   }

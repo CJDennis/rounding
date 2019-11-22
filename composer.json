@@ -3,11 +3,11 @@
     "description": "Rounding with finer control than the built-in PHP functions",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {},
     "require-dev": {
         "codeception/codeception": "3.1.1",
-        "infection/infection": "0.14.1"
+        "infection/infection": "0.14.2"
     },
     "autoload": {
         "psr-4": {"CJDennis\\Rounding\\": "src/CJDennis/Rounding/"}
